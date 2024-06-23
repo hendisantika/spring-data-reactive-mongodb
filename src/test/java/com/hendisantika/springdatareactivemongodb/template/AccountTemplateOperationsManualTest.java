@@ -7,10 +7,14 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by IntelliJ IDEA.
@@ -44,4 +48,13 @@ public class AccountTemplateOperationsManualTest {
         assertEquals(accountMonoResult.block().getOwner(), "Satoru");
     }
 
+    @Test
+    public void whenFindAll_thenFindAllAccounts() {
+        Account account1 = accountTemplate.save(Mono.just(new Account(null, "Raul", 12.3))).block();
+        Account account2 = accountTemplate.save(Mono.just(new Account(null, "Raul Gonzales", 13.3))).block();
+        Flux<Account> accountFlux = accountTemplate.findAll();
+        List<Account> accounts = accountFlux.collectList().block();
+        assertTrue(accounts.stream().anyMatch(x -> account1.getId().equals(x.getId())));
+        assertTrue(accounts.stream().anyMatch(x -> account2.getId().equals(x.getId())));
+    }
 }
