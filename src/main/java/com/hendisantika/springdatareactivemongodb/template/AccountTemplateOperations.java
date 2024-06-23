@@ -1,9 +1,11 @@
 package com.hendisantika.springdatareactivemongodb.template;
 
+import com.hendisantika.springdatareactivemongodb.document.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,4 +22,8 @@ import org.springframework.stereotype.Service;
 public class AccountTemplateOperations {
 
     private final ReactiveMongoTemplate template;
+
+    public Mono<Account> findById(String id) {
+        return template.findById(id, Account.class);
+    }
 }
