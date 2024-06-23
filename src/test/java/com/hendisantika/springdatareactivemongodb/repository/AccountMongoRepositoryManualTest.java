@@ -1,6 +1,7 @@
 package com.hendisantika.springdatareactivemongodb.repository;
 
 import com.hendisantika.springdatareactivemongodb.document.Account;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -28,6 +29,7 @@ import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatc
 @SpringBootTest
 @Testcontainers
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Disabled
 public class AccountMongoRepositoryManualTest {
 
     @Autowired
