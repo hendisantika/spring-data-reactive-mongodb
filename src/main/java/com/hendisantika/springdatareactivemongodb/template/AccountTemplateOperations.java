@@ -4,6 +4,7 @@ import com.hendisantika.springdatareactivemongodb.document.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.data.mongodb.core.ReactiveRemoveOperation;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -34,5 +35,9 @@ public class AccountTemplateOperations {
 
     public Mono<Account> save(Mono<Account> account) {
         return template.save(account);
+    }
+
+    public ReactiveRemoveOperation.ReactiveRemove<Account> deleteAll() {
+        return template.remove(Account.class);
     }
 }
