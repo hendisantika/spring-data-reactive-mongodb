@@ -51,4 +51,9 @@ public class ErrorLogsCounter implements LogsCounter {
                 .publishTo(listener)
                 .build();
     }
+
+    @Override
+    public int count() {
+        return counter.get();
+    }
 }
