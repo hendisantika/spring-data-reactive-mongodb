@@ -31,4 +31,8 @@ public class AccountTemplateOperations {
     public Flux<Account> findAll() {
         return template.findAll(Account.class);
     }
+
+    public Mono<Account> save(Mono<Account> account) {
+        return template.save(account);
+    }
 }
