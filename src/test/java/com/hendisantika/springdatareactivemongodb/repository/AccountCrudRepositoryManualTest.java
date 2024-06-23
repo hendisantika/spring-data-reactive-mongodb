@@ -1,11 +1,12 @@
 package com.hendisantika.springdatareactivemongodb.repository;
 
-import com.hendisantika.springdatareactivemongodb.MongoDBTestContainerConfig;
+import com.hendisantika.springdatareactivemongodb.ContainerBase;
 import com.hendisantika.springdatareactivemongodb.document.Account;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -24,10 +25,13 @@ import static org.junit.Assert.assertNotNull;
  * To change this template use File | Settings | File Templates.
  */
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = SpringDataReactiveMongodbApplication.class)
-@DataMongoTest
+//@DataMongoTest
+//@Testcontainers
+//@ContextConfiguration(classes = MongoDBTestContainerConfig.class)
+@SpringBootTest
 @Testcontainers
-@ContextConfiguration(classes = MongoDBTestContainerConfig.class)
-public class AccountCrudRepositoryManualTest {
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class AccountCrudRepositoryManualTest extends ContainerBase {
 
     @Autowired
     AccountCrudRepository repository;

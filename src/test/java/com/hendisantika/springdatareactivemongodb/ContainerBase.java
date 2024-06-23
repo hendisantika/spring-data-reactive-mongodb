@@ -23,9 +23,9 @@ public abstract class ContainerBase {
         mongo = new GenericContainer("mongo:8.0-rc-jammy")
                 .withExposedPorts(27017)
                 .waitingFor(Wait.forLogMessage(".*Waiting for connections.*\\n", 1))
-                .withEnv("MONGO_INITDB_ROOT_USERNAME", "datmt_root")
+                .withEnv("MONGO_INITDB_ROOT_USERNAME", "yuji")
                 .withReuse(true)
-                .withEnv("MONGO_INITDB_ROOT_PASSWORD", "datmt_root");
+                .withEnv("MONGO_INITDB_ROOT_PASSWORD", "S3cret");
     }
 
     static {
@@ -37,8 +37,8 @@ public abstract class ContainerBase {
         registry.add("spring.data.mongodb.host", mongo::getHost);
         registry.add("spring.data.mongodb.port", mongo::getFirstMappedPort);
         registry.add("spring.data.mongodb.database", () -> "app_db");
-        registry.add("spring.data.mongodb.username", () -> "datmt_root");
-        registry.add("spring.data.mongodb.password", () -> "datmt_root");
+        registry.add("spring.data.mongodb.username", () -> "yuji");
+        registry.add("spring.data.mongodb.password", () -> "S3cret");
     }
 
 }
