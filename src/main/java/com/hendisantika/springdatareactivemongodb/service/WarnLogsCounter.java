@@ -1,9 +1,16 @@
 package com.hendisantika.springdatareactivemongodb.service;
 
+import com.hendisantika.springdatareactivemongodb.document.Log;
+import com.hendisantika.springdatareactivemongodb.document.LogLevel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,4 +29,12 @@ public class WarnLogsCounter implements LogsCounter {
 
     private final AtomicInteger counter = new AtomicInteger();
     private final Disposable subscription;
+
+    public WarnLogsCounter(ReactiveMongoOperations template) {
+        Flux<Log> stream = template.tail(query(where(LEVEL_FIELD_NAME).is(LogLevel.WARN)), Log.class);
+        subscription = stream.subscribe(logEntity -> {
+            log.warn("WARN log received: " + logEntity);
+            counter.incrementAndGet();
+        });
+    }
 }
