@@ -32,4 +32,9 @@ public class InfoLogsCounter implements LogsCounter {
             counter.incrementAndGet();
         });
     }
+
+    @Override
+    public int count() {
+        return this.counter.get();
+    }
 }
