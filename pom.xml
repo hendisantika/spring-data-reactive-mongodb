@@ -38,11 +38,10 @@
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
-            <version>${reactor.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.reactivex.rxjava2</groupId>
+            <groupId>io.reactivex.rxjava3</groupId>
             <artifactId>rxjava</artifactId>
         </dependency>
         <dependency>
