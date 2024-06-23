@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.core.publisher.Mono;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -31,8 +32,16 @@ public class AccountTemplateOperationsManualTest {
 
     @Test
     public void givenAccount_whenSave_thenSave() {
-        Account account = accountTemplate.save(Mono.just(new Account(null, "Raul", 12.3))).block();
+        Account account = accountTemplate.save(Mono.just(new Account(null, "Satoru", 12.3))).block();
         assertNotNull(account.getId());
+    }
+
+    @Test
+    public void givenId_whenFindById_thenFindAccount() {
+        Mono<Account> accountMono = accountTemplate.save(Mono.just(new Account(null, "Satoru", 12.3)));
+        Mono<Account> accountMonoResult = accountTemplate.findById(accountMono.block().getId());
+        assertNotNull(accountMonoResult.block().getId());
+        assertEquals(accountMonoResult.block().getOwner(), "Satoru");
     }
 
 }
