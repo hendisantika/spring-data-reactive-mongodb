@@ -2,6 +2,7 @@ package com.hendisantika.springdatareactivemongodb.service;
 
 import com.hendisantika.springdatareactivemongodb.document.Log;
 import com.hendisantika.springdatareactivemongodb.document.LogLevel;
+import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import reactor.core.Disposable;
@@ -43,4 +44,8 @@ public class WarnLogsCounter implements LogsCounter {
         return counter.get();
     }
 
+    @PreDestroy
+    public void close() {
+        subscription.dispose();
+    }
 }

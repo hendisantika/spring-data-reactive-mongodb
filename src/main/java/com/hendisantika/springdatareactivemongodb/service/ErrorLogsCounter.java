@@ -1,13 +1,20 @@
 package com.hendisantika.springdatareactivemongodb.service;
 
+import com.hendisantika.springdatareactivemongodb.document.Log;
+import com.hendisantika.springdatareactivemongodb.document.LogLevel;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.messaging.DefaultMessageListenerContainer;
+import org.springframework.data.mongodb.core.messaging.MessageListener;
 import org.springframework.data.mongodb.core.messaging.MessageListenerContainer;
 import org.springframework.data.mongodb.core.messaging.TailableCursorRequest;
 
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * Created by IntelliJ IDEA.
