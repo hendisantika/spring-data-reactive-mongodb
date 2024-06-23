@@ -1,7 +1,6 @@
 package com.hendisantika.springdatareactivemongodb.repository;
 
 import com.hendisantika.springdatareactivemongodb.document.Account;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -31,7 +30,7 @@ import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatc
 @SpringBootTest
 @Testcontainers
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@Disabled
+//@Disabled
 public class AccountMongoRepositoryManualTest {
 
     @Autowired
@@ -58,6 +57,22 @@ public class AccountMongoRepositoryManualTest {
         StepVerifier
                 .create(accountMono)
                 .assertNext(account -> assertNotNull(account.getId()))
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    public void givenId_whenFindById_thenFindAccount() {
+        Account inserted = repository.save(new Account(null, "john", 12.3)).block();
+        Mono<Account> accountMono = repository.findById(inserted.getId());
+
+        StepVerifier
+                .create(accountMono)
+                .assertNext(account -> {
+                    assertEquals("john", account.getOwner());
+                    assertEquals(Double.valueOf(12.3), account.getValue());
+                    assertNotNull(account.getId());
+                })
                 .expectComplete()
                 .verify();
     }
