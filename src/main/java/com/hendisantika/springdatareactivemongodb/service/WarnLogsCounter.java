@@ -37,4 +37,10 @@ public class WarnLogsCounter implements LogsCounter {
             counter.incrementAndGet();
         });
     }
+
+    @Override
+    public int count() {
+        return counter.get();
+    }
+
 }
