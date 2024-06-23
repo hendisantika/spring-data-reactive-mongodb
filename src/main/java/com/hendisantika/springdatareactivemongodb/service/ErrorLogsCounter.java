@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.messaging.DefaultMessageListenerContainer;
 import org.springframework.data.mongodb.core.messaging.MessageListenerContainer;
+import org.springframework.data.mongodb.core.messaging.TailableCursorRequest;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -37,4 +38,17 @@ public class ErrorLogsCounter implements LogsCounter {
         container.register(request, Log.class);
     }
 
+    @SuppressWarnings("unchecked")
+    private TailableCursorRequest<Log> getTailableCursorRequest() {
+        MessageListener<Document, Log> listener = message -> {
+            log.info("ERROR log received: {}", message.getBody());
+            counter.incrementAndGet();
+        };
+
+        return TailableCursorRequest.builder()
+                .collection(collectionName)
+                .filter(query(where(LEVEL_FIELD_NAME).is(LogLevel.ERROR)))
+                .publishTo(listener)
+                .build();
+    }
 }
