@@ -1,6 +1,8 @@
 package com.hendisantika.springdatareactivemongodb.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.messaging.DefaultMessageListenerContainer;
 import org.springframework.data.mongodb.core.messaging.MessageListenerContainer;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,5 +26,15 @@ public class ErrorLogsCounter implements LogsCounter {
     private final MessageListenerContainer container;
 
     private final AtomicInteger counter = new AtomicInteger();
+
+    public ErrorLogsCounter(MongoTemplate mongoTemplate,
+                            String collectionName) {
+        this.collectionName = collectionName;
+        this.container = new DefaultMessageListenerContainer(mongoTemplate);
+
+        container.start();
+        TailableCursorRequest<Log> request = getTailableCursorRequest();
+        container.register(request, Log.class);
+    }
 
 }
