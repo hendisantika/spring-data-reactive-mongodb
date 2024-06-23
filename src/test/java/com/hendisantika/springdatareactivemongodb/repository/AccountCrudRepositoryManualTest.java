@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.junit.Assert.assertEquals;
@@ -49,5 +50,22 @@ public class AccountCrudRepositoryManualTest extends ContainerBase {
                 })
                 .expectComplete()
                 .verify();
+    }
+
+    @Test
+    public void givenOwner_whenFindFirstByOwner_thenFindAccount() {
+        repository.save(new Account(null, "Bill", 12.3)).block();
+        Mono<Account> accountMono = repository.findFirstByOwner(Mono.just("Bill"));
+
+        StepVerifier.create(accountMono)
+                .assertNext(account -> {
+                    assertEquals("Bill", account.getOwner());
+                    assertEquals(Double.valueOf(12.3), account.getValue());
+                    assertNotNull(account.getId());
+                })
+                .expectComplete()
+                .verify();
+
+
     }
 }
