@@ -1,7 +1,11 @@
 package com.hendisantika.springdatareactivemongodb.service;
 
+import com.hendisantika.springdatareactivemongodb.document.Log;
+import com.hendisantika.springdatareactivemongodb.document.LogLevel;
+import com.hendisantika.springdatareactivemongodb.repository.LogsRepository;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -21,4 +25,11 @@ public class InfoLogsCounter implements LogsCounter {
     private final AtomicInteger counter = new AtomicInteger();
     private final Disposable subscription;
 
+    public InfoLogsCounter(LogsRepository repository) {
+        Flux<Log> stream = repository.findByLevel(LogLevel.INFO);
+        this.subscription = stream.subscribe(logEntity -> {
+            log.info("INFO log received: " + logEntity);
+            counter.incrementAndGet();
+        });
+    }
 }
