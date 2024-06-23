@@ -3,6 +3,7 @@ package com.hendisantika.springdatareactivemongodb.service;
 import com.hendisantika.springdatareactivemongodb.document.Log;
 import com.hendisantika.springdatareactivemongodb.document.LogLevel;
 import com.hendisantika.springdatareactivemongodb.repository.LogsRepository;
+import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
@@ -36,5 +37,10 @@ public class InfoLogsCounter implements LogsCounter {
     @Override
     public int count() {
         return this.counter.get();
+    }
+
+    @PreDestroy
+    public void close() {
+        this.subscription.dispose();
     }
 }
