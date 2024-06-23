@@ -11,9 +11,11 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.startsWith;
 
 /**
@@ -45,6 +47,17 @@ public class AccountMongoRepositoryManualTest {
         StepVerifier
                 .create(accountFlux)
                 .assertNext(account -> assertEquals("Gojo", account.getOwner()))
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    public void givenAccount_whenSave_thenSave() {
+        Mono<Account> accountMono = repository.save(new Account(null, "john", 12.3));
+
+        StepVerifier
+                .create(accountMono)
+                .assertNext(account -> assertNotNull(account.getId()))
                 .expectComplete()
                 .verify();
     }
