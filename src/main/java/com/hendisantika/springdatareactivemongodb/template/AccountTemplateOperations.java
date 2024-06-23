@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -25,5 +26,9 @@ public class AccountTemplateOperations {
 
     public Mono<Account> findById(String id) {
         return template.findById(id, Account.class);
+    }
+
+    public Flux<Account> findAll() {
+        return template.findAll(Account.class);
     }
 }
