@@ -1,5 +1,6 @@
 package com.hendisantika.springdatareactivemongodb.service;
 
+import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.messaging.DefaultMessageListenerContainer;
@@ -55,5 +56,10 @@ public class ErrorLogsCounter implements LogsCounter {
     @Override
     public int count() {
         return counter.get();
+    }
+
+    @PreDestroy
+    public void close() {
+        container.stop();
     }
 }
